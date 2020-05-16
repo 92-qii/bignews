@@ -31,32 +31,35 @@
       <form class="login_form" action="https://www.baidu.com">
         <i class="iconfont icon-user"></i>
         <i class="iconfont icon-key"></i>
-        <input type="text" name="username" class="input_txt" placeholder="邮箱/手机号" />
-        <input type="password" name="password" class="input_pass" placeholder="密码" />
+        <input type="text" name="username" value="admin" class="input_txt" placeholder="邮箱/手机号" />
+        <input type="password" name="password" value="123456" class="input_pass" placeholder="密码" />
         <input type="submit" class="input_sub" value="登 录" />
       </form>
     </div>
   </div>
 
 
-  <!-- 使用bootstrap的模态框 -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+
+  <!-- 从官网中下载模态框的模板进行修改 -->
+  <div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
               aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">温馨提示!</h4>
+          <h4 class="modal-title">温馨提示</h4>
         </div>
         <div class="modal-body">
-
+          <p></p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" data-dismiss="modal">确认</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+          <!-- <button type="button" class="btn btn-primary">确定</button> -->
         </div>
-      </div>
-    </div>
-  </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
   <script src="./libs/http.js"></script>
 

@@ -70,18 +70,38 @@ $(function () {
         })
         if (flag) {
           // 如果此时flag为true，表明密码和用户起码有一个为空
-          alert("输入的用户名或密码不能为空")
+          // alert("输入的用户名或密码不能为空")
+          // 弹出模态框
+          $(".modal").modal("show")
+          // 添加模态框中的提示文本
+          $(".modal-body p").text("输入的用户名或密码不能为空")
+          // 弹出模态框
+
           return false//阻止代码继续向下执行
         }
       },
       success: function (res) {
         // console.log(res)
         if (res.code == 200) {
-          alert("登录成功")
-          // 跳转到新页面
-          window.location.href = "./index.html"
+          // alert("登录成功")
+          // 弹出模态框
+          $(".modal").modal("show")
+          // 添加模态框中的提示文本
+          $(".modal-body p").text("登录成功")
+          // 给添加的模态框注册事件--》hidden.bs.modal--》事件在在模态框被隐藏（并且同时在 CSS 过渡效果完成）之后被触发
+          $(".modal").on("hidden.bs.modal", function () {
+            // 跳转到新页面
+            window.location.href = "./index.html"
+          })
+
+
+
         } else {
-          alert(res.msg)
+          // alert(res.msg)
+          // 弹出模态框
+          $(".modal").modal("show")
+          // 添加模态框中的提示文本
+          $(".modal-body p").text(res.msg)
         }
       }
     })
