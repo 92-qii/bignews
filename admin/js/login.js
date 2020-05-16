@@ -56,7 +56,9 @@ $(function () {
     // 3.发送ajax请求
     $.ajax({
       type: "post",
-      url: "http://localhost:8080/api/v1/admin/user/login",
+      // url: "http://localhost:8080/api/v1/admin/user/login",
+      //接口地址从window对象中的BigNew对象中获取.
+      url: window.BigNew.user_login,
       data: $(this).serialize(),
       // 4.提交前检验
       beforeSend: function () {

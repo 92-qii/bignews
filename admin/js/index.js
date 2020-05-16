@@ -88,7 +88,8 @@ $(function () {
     // ajax写法：
     $.ajax({
         type: "get",
-        url: 'http://localhost:8080/api/v1/admin/user/info',
+        // url: 'http://localhost:8080/api/v1/admin/user/info',
+        url: window.BigNew.user_info,
         headers: {
             // 获取本地存储名为token的数据--》token数据在login.js页面提交给服务器的时候已经存储了
             // "Authorization": localStorage.getItem("token")
