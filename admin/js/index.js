@@ -68,4 +68,47 @@
 //   });
 
 
-// });
+$(function () {
+    // // 1.进入index页面要立刻向服务器发送ajax请求返回index.html页面的数据
+    // // 原生js写法
+    // var xhr = new XMLHttpRequest()
+    // // 请求行
+    // xhr.open('get', 'http://localhost:8080/api/v1/admin/user/info')
+    // // 使用请求头将服务器端返回的token令牌再次发送给服务器端（如果没添加token是403页面）
+    // xhr.setRequestHeader("Authorization", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiYWRtaW4iLCJleHAiOjIxOTQ0MTQyMzcsImlhdCI6MTU4OTYxNDIzN30.WVCqH1jV3KOnynO1J2MnUDVveZcfkxYeaO_ZwoklDVhLeYQ_O01aSuhS3oKYed_LvOqfb3IgwxxRKtwMI4C73gmMh_OeKwB_G0VmzJCAia5Kyjy1SezXWTKcr6CAdOf60qoh-6INwrtqOaL_2U18OO3ADtY6RVVNLe3oXz9d3fE")
+    // // 请求体
+    // xhr.send(null)
+    // xhr.onreadystatechange = function () {
+    //     if (xhr.status == 200 && xhr.readyState == 4) {
+    //         console.log(xhr.responseText)
+    //     }
+    // }
+
+
+    // ajax写法：
+    $.ajax({
+        type: "get",
+        url: 'http://localhost:8080/api/v1/admin/user/info',
+        headers: {
+            // 获取本地存储名为token的数据--》token数据在login.js页面提交给服务器的时候已经存储了
+            // "Authorization": localStorage.getItem("token")
+            'Authorization': localStorage.getItem('token')
+        },
+        success: function (res) {
+            console.log(res)
+            if (res.code == 200) {
+                // 将请求回来的内容渲染到页面
+                // 显示登陆的用户名 
+                $('.user_info span i').text(res.data.nickname)
+
+                // 显示登陆的头像
+                $('.user_info img').attr('src', res.data.userPic)
+
+                // 个人中心的图片也设置一样
+                $('.user_center_link img').attr('src', res.data.userPic)
+            }
+
+        }
+    })
+
+});

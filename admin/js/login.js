@@ -92,6 +92,8 @@ $(function () {
           $(".modal").on("hidden.bs.modal", function () {
             // 跳转到新页面
             window.location.href = "./index.html"
+            // 设置本地存储，存储名为token的数据，存储内容为token令牌内容
+            localStorage.setItem("token", res.token)
           })
 
 
