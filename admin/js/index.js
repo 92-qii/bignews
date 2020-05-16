@@ -111,4 +111,18 @@ $(function () {
         }
     })
 
+
+    // 设置退出登录实现功能
+    // 1.删除token值
+    // 2.返回login登录页面
+
+    // 给退出按钮注册事件
+    $(".logout").on("click", function () {
+        // 1.删除token值
+        localStorage.removeItem("token")
+        // 2.返回login登录页面
+        window.location.href = './login.html'
+
+    })
+
 });
