@@ -1,77 +1,3 @@
-// //入口函数
-// $(function() {
-//   //一: 一进到个人中心页面,就显示登录的这个管理员的所有信息
-//   $.ajax({
-//     type: "get",
-//     url: BigNew.user_detail,
-//     success: function(backData) {
-//       //console.log(backData);
-//       if (backData.code == 200) {
-//         // $('input.username').val(backData.data.username);
-//         // $('input.nickname').val(backData.data.nickname);
-//         // $('input.email').val(backData.data.email);
-//         // $('input.password').val(backData.data.password);
-//         //上面四句代码可以简写成下面这样
-//         for (var key in backData.data) {
-//           //key:
-//           $("input." + key).val(backData.data[key]);
-//         }
-//         $("img.user_pic").attr("src", backData.data.userPic);
-//       }
-//     }
-//   });
-
-//   //二: 图片预览
-//   //给选择图片的input:file按钮设置一个值改变事件
-//   $("#exampleInputFile").on("change", function() {
-//     var fileIcon = this.files[0]; //获取文件
-//     //console.log(fileIcon);
-//     var url = URL.createObjectURL(fileIcon); //把这个文件生成一个url
-//     $("img.user_pic").attr("src", url); //把url交给预览用的img的src
-//   });
-
-//   //三: 点击修改按钮,完成个人信息的修改
-//   $("button.btn-edit").on("click", function(e) {
-//     e.preventDefault();
-//     //创建一个formData对象
-//     var fd = new FormData($("#form")[0]); //form表单dom对象
-//     //fd对象获取form表单中所有带有name属性的标签的值, 这个值要发送到接口中去,
-//     //所以这些name属性的取值 和 接口的参数名要一致.
-//     //发送ajax请求
-//     $.ajax({
-//       type: "post",
-//       url: BigNew.user_edit,
-//       data: fd,
-//       contentType: false,
-//       processData: false,
-//       success: function(backData) {
-//         //console.log(backData);
-//         if (backData.code == 200) {
-//           alert("修改成功");
-//           //第一种解决办法: 刷新一下页面
-//           //parent.window.location.reload();
-
-//           //第二种解决办法:
-//           //发送ajax请求,获取网站管理员用户的个人信息
-//           $.ajax({
-//             url: window.BigNew.user_info,
-//             success: function(backData) {
-//               //console.log(backData);
-//               if (backData.code == 200) {
-//                 //给父页面的显示个人信息的标签设置新的值.
-//                 parent.$(".user_info>span>i").text(backData.data.nickname);
-//                 parent.$(".user_info>img").attr("src", backData.data.userPic);
-//                 parent
-//                   .$(".user_center_link>img")
-//                   .attr("src", backData.data.userPic);
-//               }
-//             }
-//           });
-//         }
-//       }
-//     });
-//   });
-// });
 
 $(function () {
     // 思路：向服务器发送ajax请求将user的信息返回给浏览器渲染到页面上
@@ -96,7 +22,7 @@ $(function () {
                 $("#form  .username").val(res.data.username)
                 $("#form  .nickname").val(res.data.nickname)
                 $("#form  .email").val(res.data.email)
-                $("#form  .user_pic").attr("scr", res.data.userPic)
+                $("#form  .user_pic").attr("src", res.data.userPic)
                 $("#form  .password").val(res.data.password)
                 // 3.想要用户名不被修改，则在用户名登录框中添加disable属性即可
 
@@ -130,5 +56,84 @@ $(function () {
         // 4.渲染在页面上-->给img赋予新的scr（临时路径）
         $(".user_pic").attr("src", url)
     })
+
+
+    // 3.修改个人中心信息，重新上传到服务器，修改成功后刷新相应的数据
+    // 1.给修改按钮注册点击事件
+    // 2.获取当前表单中所有的信息
+    // 3.发送ajax请求
+    // 4.请求成功后刷新相应的数据
+
+    // 1.给修改按钮注册点击事件
+    // $("button.btn-edit").on("click", function (e)
+    $("#form").on("submit", function (e) {
+
+        e.preventDefault();
+        // 2.获取当前表单中所有的信息-->FormData是dom对象的方法
+        // var data = new FormData($("#form")[0])//将form表单中的带上传数据转换成二进制的形式再进行上传
+        var data = new FormData(this)//将form表单中的带上传数据转换成二进制的形式再进行上传
+
+        console.log(data)//返回的是一个数组
+        // 表单的序列化：表单中的内容均是字符串形式(此处表单有上传文件)
+        // 3.发送ajax请求
+        $.ajax({
+            type: "post",
+            url: BigNew.user_edit,
+            headers: {
+                // 获取本地存储名为token的数据--》token数据在login.js页面提交给服务器的时候已经存储了
+                // "Authorization": localStorage.getItem("token")
+                'Authorization': localStorage.getItem('token')
+            },
+            data: data,
+            contentType: false,//不需要进行其他格式的编码
+            processData: false,//不要转成字符串形式
+            // 4.请求成功后刷新相应的数据
+            success: function (res) {
+                // console.log(res)//返回信息如下
+                /*code: 200
+               msg: "更新成功"*/
+                if (res.code == 200) {
+                    alert(res.msg)
+
+                    // 4.请求成功后刷新相应的数据
+                    // 法1：刷新一下页面(刷新了整个页面)
+                    // parent.window.location.reload();
+
+
+                    // 法2:发送ajax请求,刷新相应部分
+                    $.ajax({
+
+                        // url: 'http://localhost:8080/api/v1/admin/user/info',
+                        url: window.BigNew.user_info,
+                        headers: {
+                            // 获取本地存储名为token的数据--》token数据在login.js页面提交给服务器的时候已经存储了
+                            // "Authorization": localStorage.getItem("token")
+                            'Authorization': localStorage.getItem('token')
+                        },
+                        success: function (res) {
+                            console.log(res)
+                            if (res.code == 200) {
+                                // 将请求回来的内容渲染到页面
+                                // 显示登陆的用户名 
+                                // 知识点：在iframe子页面中对父页面进行操作：
+                                // js：window.parent.document.querySelector(selector)
+                                // jq：parent.$(selector)
+                                parent.$('.user_info span i').text(res.data.nickname)
+
+                                // 显示登陆的头像
+                                parent.$('.user_info img').attr('src', res.data.userPic)
+
+                                // 个人中心的图片也设置一样
+                                parent.$('.user_center_link img').attr('src', res.data.userPic)
+                            }
+                        }
+                    })
+                }
+            }
+
+
+        })
+    })
+
 
 })
