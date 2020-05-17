@@ -72,3 +72,35 @@
 //     });
 //   });
 // });
+
+$(function () {
+    // 思路：向服务器发送ajax请求将user的信息返回给浏览器渲染到页面上
+    // 1.发送ajax请求（带上token）
+    // 2.将信息渲染到页面上
+
+    $.ajax({
+        type: "get",
+        url: window.BigNew.user_detail,
+        header: {
+            'Authorization': localStorage.getItem('token')
+        },
+        success: function (res) {
+            // console.log(res)//返回结果如下
+            /*{code: 200, msg: "获取成功", data: {…}}
+           code: 200
+           data: {nickname: "李思思", userPic: "http://localhost:8080/icon.jpg", email: "sisili@qq.com", password: "123456", username: "admin"}
+           msg: "获取成功"
+           __proto__: Object*/
+            // 2.将信息渲染到页面上
+            if (res.code == 200) {
+                $("#form  .username").val(res.data.username)
+                $("#form  .nickname").val(res.data.nickname)
+                $("#form  .email").val(res.data.email)
+                $("#form  .user_pic").attr("scr", res.data.userPic)
+                $("#form  .password").val(res.data.password)
+                // 3.想要用户名不被修改，则在用户名登录框中添加disable属性即可
+
+            }
+        }
+    })
+})
