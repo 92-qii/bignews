@@ -142,7 +142,7 @@ $(function () {
             // 3.3如果当前点击的是第二个level01类（文章管理）下标是1，则下拉列表的显示与折叠
             $(".menu .level02").slideToggle()
             // 3.3给当前导航栏左侧的图标切换类--》b标签
-            $(this).find("b").toggle("rotate0")
+            $(this).find("b").toggleClass("rotate0")
 
             // 4.3点击当前标签时让第一个标签在展开或折叠时保持高亮--触发
             $(".menu .level02  li:eq(0)").trigger("click")
