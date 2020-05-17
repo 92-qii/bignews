@@ -40,19 +40,19 @@ $(function () {
                         //有数据了就应该把分页插件结构给显示
                         $('#pagination-demo').show();
                         $('#pagination-demo').next().hide();
-            
+
                         callback(backData); //调用回调函数,把返回来的数据backData作为实参传递.
-                    
-                    }else if (backData.data.data.length == 0 && mypage == 1){
+
+                    } else if (backData.data.data.length == 0 && mypage == 1) {
                         //分页插件结构给隐藏
                         $('#pagination-demo').hide();
                         $('#pagination-demo').next().show(); //提示没有数据
                     }
-                    else if (backData.data.totalPage == mypage-1 && backData.data.data.length == 0){
+                    else if (backData.data.totalPage == mypage - 1 && backData.data.data.length == 0) {
                         mypage -= 1;
                         //调用changeTotalPages 这个方法 根据新的总页数 重新生成分页结构. 
                         $('#pagination-demo').twbsPagination('changeTotalPages',
-                                backData.data.totalPage, mypage);
+                            backData.data.totalPage, mypage);
                     }
                 }
             }

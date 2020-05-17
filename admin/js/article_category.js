@@ -1,5 +1,5 @@
 //入口函数
-$(function() {
+$(function () {
   //一: 一进到文章类别页面,就显示所有的文章类别
   getData();
 
@@ -8,7 +8,7 @@ $(function() {
     $.ajax({
       type: "get",
       url: BigNew.category_list,
-      success: function(backData) {
+      success: function (backData) {
         //console.log(backData);
         if (backData.code == 200) {
           //2.获取到所有的文章类别信息后,通过模板引擎渲染到页面上
@@ -23,7 +23,7 @@ $(function() {
   //show.bs.modal
   //show 方法调用之后立即触发该事件。
   //如果是通过点击某个作为触发器的元素，则此元素可以通过事件的 relatedTarget 属性进行访问。
-  $("#myModal").on("show.bs.modal", function(e) {
+  $("#myModal").on("show.bs.modal", function (e) {
     //就可以通过e.relatedTarget知道你是新增分类,还是编辑按钮弹出来的模态框
     //console.log(e.relatedTarget);
     if (e.relatedTarget === $("#xinzengfenlei")[0]) {
@@ -63,13 +63,13 @@ $(function() {
   });
 
   //三. 给模态框中的 取消按钮设置一个点击事件
-  $("#myModal .btn-cancel").on("click", function() {
+  $("#myModal .btn-cancel").on("click", function () {
     //reset() 方法可把表单中的元素重置为它们的默认值。
     $("#myModal form")[0].reset();
   });
 
   //四:给模态框中的 新增/编辑 按钮设置点击事件
-  $("#myModal .btn-queren").on("click", function() {
+  $("#myModal .btn-queren").on("click", function () {
     //判断是否拥有这个类:btn-primary ,如果有就是新增,否则就是编辑
     if ($(this).hasClass("btn-primary")) {
       // alert('新增逻辑');
@@ -88,7 +88,7 @@ $(function() {
           name: cateName,
           slug: cateSlug
         },
-        success: function(backData) {
+        success: function (backData) {
           //console.log(backData);
           if (backData.code == 201) {
             $("#myModal").modal("hide");
@@ -120,7 +120,7 @@ $(function() {
         //     slug: cateSlug
         // },
         data: data,
-        success: function(backData) {
+        success: function (backData) {
           //console.log(backData);
           if (backData.code == 200) {
             $("#myModal").modal("hide");
@@ -133,7 +133,7 @@ $(function() {
   });
 
   //五:删除分类
-  $("tbody").on("click", ".btn-delete", function() {
+  $("tbody").on("click", ".btn-delete", function () {
     if (confirm("你确定要删除吗?")) {
       //获取要删除的分类id
       var id = $(this).attr("data-id");
@@ -144,7 +144,7 @@ $(function() {
         data: {
           id: id
         },
-        success: function(backData) {
+        success: function (backData) {
           //console.log(backData);
           if (backData.code == 204) {
             getData();
@@ -154,5 +154,5 @@ $(function() {
     }
   });
 
-  
+
 });

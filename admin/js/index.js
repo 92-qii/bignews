@@ -35,37 +35,37 @@
 //     window.location.href = "./login.html";
 //   });
 
-//   //三: 首页左侧一级菜单设置点击事件
-//   $("div.level01").on("click", function() {
+// //三: 首页左侧一级菜单设置点击事件
+// $("div.level01").on("click", function () {
 //     //当前点击的设置一个active类,其他的兄弟移除active类.
 //     $(this)
-//       .addClass("active")
-//       .siblings("div")
-//       .removeClass("active");
+//         .addClass("active")
+//         .siblings("div")
+//         .removeClass("active");
 //     //如果你点击的是文章管理.
 //     if ($(this).index() == 1) {
-//       $("ul.level02").slideToggle(); //二级菜单显示就隐藏,隐藏就显示
+//         $("ul.level02").slideToggle(); //二级菜单显示就隐藏,隐藏就显示
 
-//       //设置小剑尖的旋转(其实就是设置有咩有rotate0类- 本质是c3的旋转动画)
-//       $(this)
-//         .find("b")
-//         .toggleClass("rotate0");
+//         //设置小剑尖的旋转(其实就是设置有咩有rotate0类- 本质是c3的旋转动画)
+//         $(this)
+//             .find("b")
+//             .toggleClass("rotate0");
 
-//       //默认选中第一个二级菜单.
-//       $("ul.level02>li:eq(0)>a")[0].click();
-//       //jQuery对象的click()事件,他只会触发js单击事件,而不会触发a标签的默认跳转事件.
-//       //dom对象的click()事件,他不仅会触发js单击事件,还会触发a标签的默认跳转事件
+//         //默认选中第一个二级菜单.
+//         $("ul.level02>li:eq(0)>a")[0].click();
+//         //jQuery对象的click()事件,他只会触发js单击事件,而不会触发a标签的默认跳转事件.
+//         //dom对象的click()事件,他不仅会触发js单击事件,还会触发a标签的默认跳转事件
 //     }
-//   });
+// });
 
-//   //四:首页左侧二级菜单设置点击事件
-//   $("ul.level02>li").on("click", function() {
+// //四:首页左侧二级菜单设置点击事件
+// $("ul.level02>li").on("click", function () {
 //     //当前点击的添加active类,其他的兄弟移除active类
 //     $(this)
-//       .addClass("active")
-//       .siblings("li")
-//       .removeClass("active");
-//   });
+//         .addClass("active")
+//         .siblings("li")
+//         .removeClass("active");
+// });
 
 
 $(function () {
@@ -137,30 +137,27 @@ $(function () {
     // 3.1给每一个导航栏注册一个点击事件
     $(".menu .level01").on("click", function () {
         // 3.2点击当前导航栏显示高亮（添加类），其他兄弟标签移除类
-        $(this).addClass("active").siblings().removeClass('active')
+        $(this).addClass('active').siblings().removeClass('active')
         if ($(this).index() == 1) {
             // 3.3如果当前点击的是第二个level01类（文章管理）下标是1，则下拉列表的显示与折叠
-            $(".menu .level02").slideToggle()
+            $('.menu .level02').slideToggle()
             // 3.3给当前导航栏左侧的图标切换类--》b标签
             $(this).find("b").toggleClass("rotate0")
 
             // 4.3点击当前标签时让第一个标签在展开或折叠时保持高亮--触发
-            $(".menu .level02  li:eq(0)").trigger("click")
+            $("ul.level02>li:eq(0)>a")[0].click();
 
         }
 
-
-
-        // 二级导航栏
-        // 4.1给点击第二个level01类中的li标签注册事件，
-        // 4.2点击当前标签显示高亮，其他兄弟标签移除类
-        // 4.3点击当前标签时让第一个标签在展开或折叠时保持高亮
-        // 4.1给点击第二个level01类中的li标签注册事件，
-        $(".menu .level02  li").on("click", function () {
-            // 4.2点击第二个level01类中的li标签显示高亮，其他兄弟标签移除类
-            $(this).addClass("active").siblings().removeClass('active')
-        })
-
+    })
+    // 二级导航栏
+    // 4.1给点击第二个level01类中的li标签注册事件，
+    // 4.2点击当前标签显示高亮，其他兄弟标签移除类
+    // 4.3点击当前标签时让第一个标签在展开或折叠时保持高亮
+    // 4.1给点击第二个level01类中的li标签注册事件，
+    $(".menu .level02  li").on("click", function () {
+        // 4.2点击第二个level01类中的li标签显示高亮，其他兄弟标签移除类
+        $(this).addClass('active').siblings().removeClass('active')
     })
 
 
