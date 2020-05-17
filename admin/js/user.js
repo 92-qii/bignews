@@ -103,4 +103,32 @@ $(function () {
             }
         }
     })
+
+    // 2.在个人中心页面实现图片预览功能
+    // 思路：
+    // 1.给上传文件注册onchange事件
+    // 2.获取待上传图片的信息(files属性)
+    // 3.生成临时存储路径
+    // 4.渲染在页面上
+
+
+    // 2.1给上传文件注册事件
+    $("#exampleInputFile").on("change", function () {
+        // console.log(this.files)
+        // console.log(this.files[0])//打印内容如下
+        /*lastModified: 1578133520529
+        lastModifiedDate: Sat Jan 04 2020 18:25:20 GMT+0800 (中国标准时间) {}
+        name: "微信图片_20200104182516.jpg"
+        size: 1091378
+        type: "image/jpeg"
+        webkitRelativePath: ""*/
+        // 2.获取待上传图片的信息(files属性)
+        var file = this.files[0]
+
+        // 3.生成临时存储路径渲染在页面上--> URL.createObjectURL()方法
+        var url = URL.createObjectURL(file)
+        // 4.渲染在页面上-->给img赋予新的scr（临时路径）
+        $(".user_pic").attr("src", url)
+    })
+
 })
