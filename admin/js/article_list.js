@@ -237,23 +237,42 @@ $(function () {
     })
 
     // 2.发送ajax请求显示当前页所有文章的内容
-    $.ajax({
-        url: BigNew.article_query,
-        data: {
 
+    // 传入参数：对象 调用函数
+    getdata({
+        key: $("#key").val(),
+        type: $('#selCategory').val().trim(), //获取文章类别
+        state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
+        page: 1, //当前的页数
+        perpage: 6 //一页显示多少条
+    })
+    function getdata(obj) {
+        $.ajax({
+            url: BigNew.article_query,
+            data: obj,
+            success: function (res) {
+                console.log(res)
+                if (res.code == 200) {
+                    //调用模板引擎核心方法
+                    var resHtml = template('arti_list', res);
+                    $('tbody').html(resHtml);
+                }
+            }
+        })
+    }
+
+    // 3.给筛选按钮注册事件，根据条件把对应的数据渲染到页面上
+    // 3.1给筛选按钮注册事件
+    $("#btnSearch").on("click", function (e) {
+        // 3.2阻止默认提交行为
+        e.preventDefault()
+        // 3.3发送ajax请求返回数据，调用函数即可
+        getdata({
             key: $("#key").val(),
             type: $('#selCategory').val().trim(), //获取文章类别
             state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
             page: 1, //当前的页数
             perpage: 6 //一页显示多少条
-        },
-        success: function (res) {
-            console.log(res)
-            if (res.code == 200) {
-                //调用模板引擎核心方法
-                var resHtml = template('arti_list', res);
-                $('tbody').html(resHtml);
-            }
-        }
+        })
     })
 })
