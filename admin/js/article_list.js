@@ -210,3 +210,29 @@
 
 
 // });
+
+$(function () {
+    // 1.发送ajax请求获取文章所有分类
+    $.ajax({
+        type: "get",
+        url: BigNew.category_list,
+        success: function (res) {
+            console.log(res)//返回数据如下：
+            /*code: 200
+            data: Array(5)
+            0: {id: 1, name: "爱生活123", slug: "热爱生活"}
+            1: {id: 2, name: "爱旅行", slug: "热爱旅行"}
+            2: {id: 3, name: "爱美食！！！！", slug: "热爱美食"}
+            3: {id: 4, name: "爱运动", slug: "热爱运动"}
+            4: {id: 6, name: "想去旅行", slug: "那就一起去吧"}
+            length: 5
+            __proto__: Array(0)
+            msg: "获取成功"*/
+            if (res.code == 200) {
+                //2.获取到所有的文章类别信息后,通过模板引擎渲染到页面上
+                var resHtml = template("art_cate_temp", res);
+                $("#selCategory").html(resHtml);
+            }
+        }
+    })
+})
