@@ -212,7 +212,7 @@
 // });
 
 $(function () {
-    // 1.发送ajax请求获取文章所有分类
+    // 1.发送ajax请求读取文章所有分类
     $.ajax({
         type: "get",
         url: BigNew.category_list,
@@ -232,6 +232,27 @@ $(function () {
                 //2.获取到所有的文章类别信息后,通过模板引擎渲染到页面上
                 var resHtml = template("art_cate_temp", res);
                 $("#selCategory").html(resHtml);
+            }
+        }
+    })
+
+    // 2.发送ajax请求显示当前页所有文章的内容
+    $.ajax({
+        url: BigNew.article_query,
+        data: {
+
+            key: $("#key").val(),
+            type: $('#selCategory').val().trim(), //获取文章类别
+            state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
+            page: 1, //当前的页数
+            perpage: 6 //一页显示多少条
+        },
+        success: function (res) {
+            console.log(res)
+            if (res.code == 200) {
+                //调用模板引擎核心方法
+                var resHtml = template('arti_list', res);
+                $('tbody').html(resHtml);
             }
         }
     })
