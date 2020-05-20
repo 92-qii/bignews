@@ -1,215 +1,3 @@
-// // //入口函数
-// // $(function () {
-// //     //一:一进到页面就要获取所有的文章类别. 渲染到id为selCategory的下拉菜单中. 
-// //     $.ajax({
-// //         type: "get",
-// //         url: BigNew.category_list,
-// //         success: function (backData) {
-// //             //console.log(backData);
-// //             if (backData.code == 200) {
-// //                 //2.获取到所有的文章类别信息后,通过模板引擎渲染到页面上
-// //                 var resHtml = template("art_cate_temp", backData);
-// //                 $("#selCategory").html(resHtml);
-// //             }
-// //         }
-// //     });
-
-
-// //     //------------------------------------------------------------------
-// //     //声明一个变量mypage,表示当前点击的分页页签数字.
-// //     var mypage = 1;
-// //     //发送ajax请求封装成一个函数.
-// //     function getData(mypage, callback) {
-// //         $.ajax({
-// //             url: BigNew.article_query,
-// //             data: {
-// //                 type: $('#selCategory').val().trim(), //获取文章类别
-// //                 state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
-// //                 page: mypage, //当前的页数
-// //                 perpage: 6 //一页显示多少条
-// //             },
-// //             success: function (backData) {
-// //                 if (backData.code == 200) {
-// //                     //调用模板引擎核心方法
-// //                     var resHtml = template('arti_list', backData);
-// //                     $('tbody').html(resHtml);
-
-// //                     //这里会有一些操作,
-// //                     //比如页面一进来这里有分页插件的设置; 点击筛选按钮这里有重新渲染分页插件结构的代码
-// //                     if (backData.data.data.length != 0 && callback != null) {
-// //                         //有数据了就应该把分页插件结构给显示
-// //                         $('#pagination-demo').show();
-// //                         $('#pagination-demo').next().hide();
-
-// //                         callback(backData); //调用回调函数,把返回来的数据backData作为实参传递.
-
-// //                     } else if (backData.data.data.length == 0 && mypage == 1) {
-// //                         //分页插件结构给隐藏
-// //                         $('#pagination-demo').hide();
-// //                         $('#pagination-demo').next().show(); //提示没有数据
-// //                     }
-// //                     else if (backData.data.totalPage == mypage - 1 && backData.data.data.length == 0) {
-// //                         mypage -= 1;
-// //                         //调用changeTotalPages 这个方法 根据新的总页数 重新生成分页结构. 
-// //                         $('#pagination-demo').twbsPagination('changeTotalPages',
-// //                             backData.data.totalPage, mypage);
-// //                     }
-// //                 }
-// //             }
-// //         });
-// //     }
-
-// //     //二:一进到页面就要获取默认条件下的文章们并显示. 
-// //     getData(1, function (backData) {
-// //         //分页插件
-// //         $('#pagination-demo').twbsPagination({
-// //             totalPages: backData.data.totalPage, //总页数
-// //             visiblePages: 7,
-// //             first: '首页',
-// //             prev: '上一页',
-// //             next: '下一页',
-// //             last: '尾页',
-// //             onPageClick: function (event, page) {
-// //                 //console.log(page); //当前点击的页数.
-// //                 mypage = page; //把当前点击的这一个页码给mypage赋值. 
-// //                 getData(page, null);
-// //             }
-
-// //         });
-// //     });
-
-// //     //三:给筛选按钮设置点击事件,获取满足条件的文章们
-// //     $('#btnSearch').on('click', function (e) {
-// //         e.preventDefault();
-// //         //发送ajax请求.
-// //         getData(1, function (backData) {
-// //             //改变了筛选条件,那总页数就有可能发生了改变
-// //             //调用changeTotalPages 这个方法 根据新的总页数 重新生成分页结构. 
-// //             $('#pagination-demo').twbsPagination('changeTotalPages',
-// //                 backData.data.totalPage, 1);
-// //         });
-// //     });
-
-
-// //     //四: 删除文章
-// //     $('tbody').on('click', '.delete', function () {
-// //         if (confirm('你确定要删除吗?')) {
-// //             //获取当前要删除的这一行的文章id
-// //             var id = $(this).attr('data-id');
-// //             //发送ajax请求,完成删除
-// //             $.ajax({
-// //                 type: 'post',
-// //                 url: BigNew.article_delete,
-// //                 data: {
-// //                     id: id
-// //                 },
-// //                 success: function (backData) {
-// //                     //console.log(backData);
-// //                     if (backData.code == 204) {
-// //                         //重新刷新页面
-// //                         //window.location.reload();
-
-// //                         //重新发送ajax请求,就获取当前页数据. 
-// //                         getData(mypage, function (backData) {
-// //                             //删除了部分数据,那总页数就有可能发生了改变
-// //                             //调用changeTotalPages 这个方法 根据新的总页数 重新生成分页结构. 
-// //                             $('#pagination-demo').twbsPagination('changeTotalPages',
-// //                                 backData.data.totalPage, mypage);
-// //                         });
-// //                     }
-// //                 }
-// //             });
-// //         }
-// //     })
-
-
-
-// //     //-------------------------------------------------------------------
-// //     // //二:一进到页面就要获取默认条件下的文章们并显示. 
-// //     // $.ajax({
-// //     //     url: BigNew.article_query,
-// //     //     data: {
-// //     //         type: $('#selCategory').val().trim(),
-// //     //         state: $('#selStatus').val().trim(),
-// //     //         page: 1,
-// //     //         perpage: 8
-// //     //     },
-// //     //     success: function (backData) {
-// //     //         console.log(backData);
-// //     //         if (backData.code == 200) {
-// //     //             //调用模板引擎核心方法
-// //     //             var resHtml = template('arti_list', backData);
-// //     //             $('tbody').html(resHtml);
-
-// //     //             //分页插件
-// //     //             $('#pagination-demo').twbsPagination({
-// //     //                 totalPages: backData.data.totalPage, //总页数
-// //     //                 visiblePages: 7,
-// //     //                 first: '首页',
-// //     //                 prev: '上一页',
-// //     //                 next: '下一页',
-// //     //                 last: '尾页',
-// //     //                 onPageClick: function (event, page) {
-// //     //                     //console.log(page); //当前点击的页数.
-// //     //                     $.ajax({
-// //     //                         url: BigNew.article_query,
-// //     //                         data: {
-// //     //                             type: $('#selCategory').val().trim(),
-// //     //                             state: $('#selStatus').val().trim(),
-// //     //                             page: page,
-// //     //                             perpage: 8
-// //     //                         },
-// //     //                         success: function (backData) {
-// //     //                             console.log(backData);
-// //     //                             if (backData.code == 200) {
-// //     //                                 //调用模板引擎核心方法
-// //     //                                 var resHtml = template(
-// //     //                                     'arti_list', backData);
-// //     //                                 $('tbody').html(resHtml);
-// //     //                             }
-// //     //                         }
-// //     //                     });
-
-// //     //                 }
-// //     //             });
-// //     //         }
-// //     //     }
-// //     // });
-
-
-// //     // //三:给筛选按钮设置点击事件,获取满足条件的文章们
-// //     // $('#btnSearch').on('click', function (e) {
-// //     //     e.preventDefault();
-// //     //     //发送ajax请求.
-// //     //     $.ajax({
-// //     //         url: BigNew.article_query,
-// //     //         data: {
-// //     //             type: $('#selCategory').val().trim(),
-// //     //             state: $('#selStatus').val().trim(),
-// //     //             page: 1,
-// //     //             perpage: 8
-// //     //         },
-// //     //         success: function (backData) {
-// //     //             if (backData.code == 200) {
-// //     //                 //调用模板引擎核心方法
-// //     //                 var resHtml = template('arti_list', backData);
-// //     //                 $('tbody').html(resHtml);
-
-// //     //                 //改变了筛选条件,那总页数就有可能发生了改变
-// //     //                 //调用changeTotalPages 这个方法 根据新的总页数 重新生成分页结构. 
-// //     //                 $('#pagination-demo').twbsPagination('changeTotalPages',
-// //     //                     backData.data.totalPage, 1);
-// //     //             }
-// //     //         }
-// //     //     });
-// //     // });
-
-// //     //----------------------------------------------------------------------------
-
-
-
-
-// // });
 
 // $(function () {
 //     // 1.发送ajax请求读取文章所有分类
@@ -346,7 +134,7 @@ $(function () {
         3.给筛选按钮注册事件，一点击向服务器发送请求，返回相应数据，渲染到页面
         4.点击页码，发送请求，返回当前页的所有数据*/
 
-    // 1. 发送ajax请求获取文章所有的分类 
+    // 1. 发送ajax请求全部分类所有的分类 
     $.ajax({
         type: "get",
         url: BigNew.category_list,
@@ -364,102 +152,121 @@ $(function () {
             msg: "获取成功"*/
             if (res.code == 200) {
                 //2.获取到所有的文章类别信息后,通过模板引擎渲染到页面上
-                var resHtml = template("art_cate_temp", res);
+                var resHtml = template("categoryList", res);
+                $('#selCategory').html(resHtml)
             }
         }
     })
     // 封装了一个根据不同条件来查询数据的函数
     // 两个形参：页数、函数
-    $(function () {
-        // 1. 发送ajax请求获取文章所有的分类 
+    // 封装了一个根据不同条件来查询数据的函数
+    function getDataByParams(myPage, callback) {
         $.ajax({
             type: 'get',
-            url: BigNew.category_list,
+            url: BigNew.article_query,
+            data: {
+                key: $('#key').val(),
+                type: $('#selCategory').val(),
+                state: $('#selStatus').val(),
+                page: myPage,
+                perpage: 7
+            },
             success: function (res) {
-                // console.log(res);
-                var htmlStr = template('categoryList', res)
-                $('#selCategory').html(htmlStr)
+                console.log(res)
+                if (res.code == 200) {
+                    // 2.2 渲染数据
+                    var htmlStr = template('articleList', res.data)
+                    $('tbody').html(htmlStr)
+                    /*********************************以上为函数相同部分******/
+                    // 2.4  根据服务器响应回来的数据来判断是否显示控件
+                    if (res.data.totalPage == 0 && myPage == 1) {
+                        $('#pagination-demo').hide().next().show()
+                    } else if (res.data.totalPage != 0 && callback != null) {
+                        // 就说明是有数据响应回来的，应该要显示分页控件
+                        $('#pagination-demo').show().next().hide()
+                        // 2.3 实现函数的调用
+                        callback(res)
+                        // pagination(res)
+                    } else if (res.data.totalPage != 0 && res.data.data.length == 0) {
+                        currentPage -= 1  // 针对于最后一页而言的 
+                        // 重绘控件页码
+                        // 更新分页控件的总页码 
+                        // 1. 第1个参数是一个事件 当页码值发生变化时就会触发
+                        // 2. 第2个参数是 要变化的新的总页码值
+                        // 3. 第3个参数 是当前页码值
+                        $('#pagination-demo').twbsPagination('changeTotalPages', res.data.totalPage, currentPage)
+                    }
+
+                }
+            }
+        })
+    }
+    // 2. 显示文章数据
+    // 2.1 一跳转到当前这个页面就要发送ajax请求
+    getDataByParams(1, pagination)
+
+    // 3. 分页功能的函数
+    var currentPage = 1
+    function pagination(res, visiblePages) {
+        $('#pagination-demo').twbsPagination({
+            totalPages: res.data.totalPage, // 总页数
+            visiblePages: visiblePages || 7, // 可见最大上限页码值
+            first: '首页',
+            last: '最后一页',
+            next: '下一页',
+            prev: '上一页',
+            initiateStartPageClick: false, // 不要默认点击 
+            onPageClick: function (event, page) {
+                //  console.log(event,page);
+                // page是当前页码
+                currentPage = page // 当默认页改成被单击后的页码
+                // 调用方法，实现当前页码的数据渲染
+                getDataByParams(page, null)
             }
         })
 
+    }
+    // 4. 给筛选按钮注册事件 根据新条件渲染页面
+    // 4.1 给筛选按钮注册事件
+    $('#btnSearch').on('click', function (e) {
+        // 4.2 阻止默认的请求行为
+        e.preventDefault()
 
+        // 4.3 发送请求获取数据
 
-        // 封装了一个根据不同条件来查询数据的函数
-        function getDataByParams(myPage, callback) {
-            $.ajax({
-                type: 'get',
-                url: BigNew.article_query,
-                data: {
-                    key: $('#key').val(),
-                    type: $('#selCategory').val(),
-                    state: $('#selStatus').val(),
-                    page: myPage,
-                    perpage: 7
-                },
-                success: function (res) {
-                    console.log(res)
-                    if (res.code == 200) {
-                        // 2.2 渲染数据
-                        var htmlStr = template('articleList', res.data)
-                        $('tbody').html(htmlStr)
-
-                        // 2.4  根据服务器响应回来的数据来判断是否显示控件
-                        if (res.data.totalPage == 0 && myPage == 1) {
-                            $('#pagination-demo').hide().next().show()
-                        } else if (res.data.totalPage != 0 && callback != null) {
-                            // 就说明是有数据响应回来的，应该要显示分页控件
-                            $('#pagination-demo').show().next().hide()
-                            // 2.3 实现函数的调用
-                            callback(res)
-                            // pagination(res)
-                        }
-
-                    }
-                }
-            })
-        }
-        // 2. 显示文章数据
-        // 2.1 一跳转到当前这个页面就要发送ajax请求
-        getDataByParams(1, pagination)
-
-        // 3. 分页功能的函数
-        function pagination(res, visiblePages) {
-            $('#pagination-demo').twbsPagination({
-                totalPages: res.data.totalPage, // 总页数
-                visiblePages: visiblePages || 7, // 可见最大上限页码值
-                first: '首页',
-                last: '最后一页',
-                next: '下一页',
-                prev: '上一页',
-                initiateStartPageClick: false, // 不要默认点击 
-                onPageClick: function (event, page) {
-                    //  console.log(event,page);
-                    // page是当前页码
-
-                    // 调用方法，实现当前页码的数据渲染
-                    getDataByParams(page, null)
-                }
-            })
-        }
-
-        // 4. 给筛选按钮注册事件 根据新条件渲染页面
-        // 4.1 给筛选按钮注册事件
-        $('#btnSearch').on('click', function (e) {
-            // 4.2 阻止默认的请求行为
-            e.preventDefault()
-
-            // 4.3 发送请求获取数据
-
-            getDataByParams(1, function (res) {
-                // 更新分页控件的总页码
-                $('#pagination-demo').twbsPagination('changeTotalPages', res.data.totalPage, 1)
-            })
-
+        getDataByParams(1, function (res) {
+            // 更新分页控件的总页码
+            $('#pagination-demo').twbsPagination('changeTotalPages', res.data.totalPage, 1)
         })
+
     })
 
     /**
      * 1. 当前项目不要纠结于某一行代码
      * 2. 要听完整的思路
      */
+    // 给模态框中的删除键注册事件
+    var articleId
+    $('#myModal').on('show.bs.modal', function (e) {
+        // console.log(e.relatedTarget );
+        articleId = $(e.relatedTarget).data('id')
+    })
+    // 5.2 给模态框上的确定按钮注册事件
+    var articleId
+    $('#myModal .btn-sure').on('click', function () {
+        // 5.3 发送ajax请求 
+        $.ajax({
+            type: 'post',
+            url: BigNew.article_delete,
+            data: {
+                id: articleId
+            },
+            success: function (res) {
+                // 5.4 请求成功后要隐藏模态框 
+                $('#myModal').modal('hide')
+                // 5.5 刷新当前页面
+                getDataByParams(currentPage, null)
+            }
+        })
+    })
 })

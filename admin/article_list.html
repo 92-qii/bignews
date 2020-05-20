@@ -19,6 +19,7 @@
     <script src="./js/http.js"></script>
     <!-- 引入当前文件的对应js文件 -->
     <script src="./js/article_list.js"></script>
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -70,31 +71,6 @@
         </div>
     </div>
 
-    <!-- 文章分类的模板 -->
-    <script type="text/template" id="categoryList">
-        <option value="">所有分类</option>
-        {{each data value index}}
-            <option value="{{value.id}}">{{value.name}}</option>
-        {{/each}}
-    </script>
-
-    <!-- 文章列表的模板 -->
-    <script type="text/template" id="articleList">
-        {{each data value index}}
-         <tr>
-            <td class="text-center">{{index+1}}</td>
-             <td>{{value.title}}</td>
-             <td>{{value.author}}</td>
-             <td>{{value.category}}</td>
-             <td class="text-center">{{value.date}}</td>
-             <td class="text-center">{{value.state}}</td>
-             <td class="text-center">
-                 <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
-                 <a href="javascript:void(0);" class="btn btn-danger btn-xs delete"> 删除</a>
-             </td>
-         </tr>
-        {{/each}}
-    </script>
     <!-- 删除文字模态框 -->
     <div class="modal fade  delModal" id='myModal' tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -114,6 +90,33 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <!-- 文章分类的模板 -->
+    <script type="text/template" id="categoryList">
+        <option value="">所有分类</option>
+        {{each data value index}}
+            <option value="{{value.id}}">{{value.name}}</option>
+        {{/each}}
+    </script>
+
+    <!-- 文章列表的模板 -->
+    <script type="text/template" id="articleList">
+        {{each data value index}}
+         <tr>
+            <td class="text-center">{{index+1}}</td>
+             <td>{{value.title}}</td>
+             <td>{{value.author}}</td>
+             <td>{{value.category}}</td>
+             <td class="text-center">{{value.date}}</td>
+             <td class="text-center">{{value.state}}</td>
+             <td class="text-center">
+                 <a href="article_edit.html?id="{{value.id}}"" class="btn btn-default btn-xs" data-id="{{value.id}}">编辑</a>
+                 <button type="button" data-toggle="modal" data-target="#myModal"  class="btn btn-default btn-xs" data-id="{{value.id}}">删除</button>
+             </td>
+         </tr>
+        {{/each}}
+    </script>
+
 </body>
 
 </html>
