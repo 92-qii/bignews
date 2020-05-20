@@ -232,20 +232,20 @@ $(function () {
                 //2.获取到所有的文章类别信息后,通过模板引擎渲染到页面上
                 var resHtml = template("art_cate_temp", res);
                 $("#selCategory").html(resHtml);
+                if (res.data.totalPage == 0) {
+                    // 服务器返回是否有数据决定是否显示控件
+                    $('#pagination-demo').hide().next().show()
+                } else {
+                    $('#pagination-demo').show().next().hide()
+                    pagination(res)
+                }
             }
         }
     })
 
     // 2.发送ajax请求显示当前页所有文章的内容
 
-    // 传入参数：对象 调用函数
-    getdata({
-        key: $("#key").val(),
-        type: $('#selCategory').val().trim(), //获取文章类别
-        state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
-        page: 1, //当前的页数
-        perpage: 6 //一页显示多少条
-    })
+    // 封装函数
     function getdata(obj) {
         $.ajax({
             url: BigNew.article_query,
@@ -256,10 +256,21 @@ $(function () {
                     //调用模板引擎核心方法
                     var resHtml = template('arti_list', res);
                     $('tbody').html(resHtml);
+                    // 启用分页
+                    pagination(res.data.totalPage)
                 }
             }
         })
     }
+
+    // 传入参数：对象 调用函数
+    getdata({
+        key: $("#key").val(),
+        type: $('#selCategory').val().trim(), //获取文章类别
+        state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
+        page: 1, //当前的页数
+        perpage: 7 //一页显示多少条
+    })
 
     // 3.给筛选按钮注册事件，根据条件把对应的数据渲染到页面上
     // 3.1给筛选按钮注册事件
@@ -267,12 +278,61 @@ $(function () {
         // 3.2阻止默认提交行为
         e.preventDefault()
         // 3.3发送ajax请求返回数据，调用函数即可
-        getdata({
-            key: $("#key").val(),
-            type: $('#selCategory').val().trim(), //获取文章类别
-            state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
-            page: 1, //当前的页数
-            perpage: 6 //一页显示多少条
+        // getdata({
+        //     key: $("#key").val(),
+        //     type: $('#selCategory').val().trim(), //获取文章类别
+        //     state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
+        //     page: 1, //当前的页数
+        //     perpage: 10 //一页显示多少条
+        // })
+
+        $.ajax({
+            url: BigNew.article_query,
+            data: {
+                key: $("#key").val(),
+                type: $('#selCategory').val().trim(), //获取文章类别
+                state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
+                page: 1, //当前的页数
+                perpage: 7 //一页显示多少条
+            },
+            success: function (res) {
+                console.log(res)
+                if (res.code == 200) {
+                    //调用模板引擎核心方法
+                    var resHtml = template('arti_list', res);
+                    $('tbody').html(resHtml);
+
+                    // 服务器的数据全部响应回来之后，更新分页插件，就是更新总页数(筛选出来的总页数！=原来所有总页数)
+                    // 调用changeTotalPages 这个方法 根据新的总页数 重新生成分页结构（内部重绘分页插件）
+                    // 三个参数：事件名称,总页码,默认当前页
+                    $('#pagination-demo').twbsPagination("changeTotalPages", res.data.totalPage, 1)
+                }
+            }
         })
     })
+
+    // 4.分页-->在页面渲染完毕后触发
+    function pagination(totalPages, visiblePages) {
+        $('#pagination-demo').twbsPagination({
+            totalPages: totalPages, //总页数
+            visiblePages: visiblePages || 7,//可见最大上限页码值
+            first: '首页',
+            prev: '上一页',
+            next: '下一页',
+            last: '尾页',
+            onPageClick: function (event, page) {
+                console.log(event, page); //当前点击的页数.
+                // mypage = page; //把当前点击的这一个页码给mypage赋值. 
+                // getData(page, null);
+                getdata({
+                    key: $("#key").val(),
+                    type: $('#selCategory').val().trim(), //获取文章类别
+                    state: $('#selStatus').val().trim(), //获取文章状态(草稿/已发布)
+                    page: page, //当前的页数
+                    perpage: 7 //一页显示多少条
+                })
+            }
+        })
+    }
+
 })
